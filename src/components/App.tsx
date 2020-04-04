@@ -1,19 +1,21 @@
 import React from 'react';
 
 import '../styles/index.css';
+import Game from './Game';
 
 export interface IAppProps {}
 
 export interface IAppState {
-	readonly Vehicle: IVehicle;
+
 }
 
 class App extends React.PureComponent<IAppProps, IAppState> {
 	render() {
 		return (
-			<div>
-				<h1>Hello World!</h1>
-			</div>
+            <div className="App">
+                <h1>Conway's Game of Life</h1>
+                <Game />
+            </div>
 		);
 	}
 }
