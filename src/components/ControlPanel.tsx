@@ -2,8 +2,10 @@ import React from 'react';
 import '../styles/ControlPanel.css';
 
 export interface IControlPanelProps {
-    onRandomClicked(): void
-    onClearClicked(): void
+    onRandomClicked(): void,
+    onClearClicked(): void,
+    onStartClicked(): void,
+    onStopClicked(): void
 }
 
 
@@ -14,11 +16,13 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
     }
 
     render() {
-        const { onRandomClicked, onClearClicked } = this.props;
+        const { onRandomClicked, onClearClicked, onStartClicked, onStopClicked } = this.props;
         return (
             <div className="controls">
                 <button className="button" onClick={onRandomClicked}>Random</button>
                 <button className="button" onClick={onClearClicked}>Clear</button>
+                <button className="button" onClick={onStartClicked}>Start</button>
+                <button className="button" onClick={onStopClicked}>Stop</button>
             </div>
         );
     }
