@@ -5,9 +5,7 @@ import Game from './Game';
 
 export interface IAppProps {}
 
-export interface IAppState {
-
-}
+export interface IAppState {}
 
 class App extends React.PureComponent<IAppProps, IAppState> {
 	render() {
