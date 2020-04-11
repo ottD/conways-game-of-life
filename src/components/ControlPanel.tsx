@@ -8,7 +8,8 @@ export interface IControlPanelProps {
     onStartClicked(): void,
     onRefreshIntervalChanged(interval: number): void;
     onCellSizeChanged(interval: number): void;
-    isRunning: boolean
+    isRunning: boolean;
+    maxWidth: number;
 }
 
 
@@ -33,11 +34,11 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
 
         return (
             <div className="controls">
-                <Stack tokens={stackTokens} styles={{ root: { maxWidth: 500 } }}>
+                <Stack tokens={stackTokens} styles={{ root: { width: this.props.maxWidth } }}>
 
                     <div className="buttons">
                         <DefaultButton
-                            className="button"
+                            // className="button"
                             onClick={onRandomClicked}
                             iconProps={randomIcon}
                             text={'Random'} />

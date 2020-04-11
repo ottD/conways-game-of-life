@@ -34,25 +34,25 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
             height: Math.ceil(rows * cellSize)
         }
     }
-  
+
     render() {
         const { width, height } = this.state;
         const { cellSize, cells } = this.props;
 
         return (
-            <div>
-                <div className="board" style={{
+            <div className="board"
+                style={{
                     width: width,
                     height: height,
                     backgroundSize: `${cellSize}px ${cellSize}px`,
                     backgroundImage:
                         `linear-gradient(#333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px),
-                         linear-gradient(90deg, #333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px)`}}
-                    onClick={this.handleClick}
-                    ref={(n) => { this.boardReference = n; }}>
+                            linear-gradient(90deg, #333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px)`
+                }}
+                onClick={this.handleClick}
+                ref={(n) => { this.boardReference = n; }}>
 
-                    {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} size={cellSize} border={this.cellBorderThickness}/> ))}
-                </div>
+                {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} size={cellSize} border={this.cellBorderThickness} />))}
             </div>
         );
     }

@@ -45,8 +45,11 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
         return (
             <div>
+                <h2>Conway's Game of Life</h2>
+
                 <Board rows={this.rows} columns={this.columns} cellSize={cellSize} cells={cells} onBoardClicked={this.handleBoardClicked} />
                 <ControlPanel
+                    maxWidth={Math.ceil(this.columns * cellSize)}
                     onClearClicked={this.handleClearClicked}
                     onRandomClicked={this.handleRandomClicked}
                     onStartClicked={this.handleStartClicked}
