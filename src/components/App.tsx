@@ -1,21 +1,21 @@
 import React from 'react';
-
-import '../styles/index.css';
 import Game from './Game';
+import { initializeIcons } from '@uifabric/icons';
+import '../styles/index.css';
 
-export interface IAppProps {}
+initializeIcons();
 
-export interface IAppState {}
+export interface IAppProps { }
 
-class App extends React.PureComponent<IAppProps, IAppState> {
-	render() {
-		return (
+export interface IAppState { }
+
+export default class App extends React.PureComponent<IAppProps, IAppState> {
+    render() {
+        return (
             <div className="App">
-                <h1>Conway's Game of Life</h1>
-                <Game />
+                    <h2>Conway's Game of Life</h2>
+                    <Game />
             </div>
-		);
-	}
+        );
+    }
 }
-
-export default App;

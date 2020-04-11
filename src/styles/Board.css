@@ -1,5 +1,6 @@
-.Board{
+.board{
     background-color: #000;
     position: relative;
-    margin: 0 auto; 
+    margin: 0 auto;  
+    cursor: pointer;
 }

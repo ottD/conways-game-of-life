@@ -12,7 +12,7 @@ export default class Cell extends React.Component<ICellProps, Readonly<{}>> {
     render() {
         const { x, y, size, border } = this.props;
         return (
-            <div className="Cell" style={{
+            <div className="cell" style={{
                 left: `${size * x + border}px`,
                 top: `${size * y + border}px`,
                 width: `${size - border}px`,

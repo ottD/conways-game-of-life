@@ -2,33 +2,32 @@ import React from 'react';
 import Board, { ICell } from './Board';
 import ControlPanel from './ControlPanel';
 
-interface IGameState{
+interface IGameState {
     cells: ICell[],
     isRunning: boolean,
-    refreshInterval: number
+    refreshInterval: number,
+    cellSize: number
 }
 
 export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
     // TODO make grid customizable
     // keep game state in 2D array 
-    private gameMatrix: boolean[][]= [];
+    private gameMatrix: boolean[][] = [];
 
-    private cellSize = 20;
-    private cellBorderThickness = 1;
-
-    private randomFactor = 0.7;
+    private randomFactor = 0.5;
 
     private rows = 30;
     private columns = 40;
     private timeoutHandler: number = 0;
-   
+
     constructor(props: Readonly<{}>) {
         super(props);
-        this.state = {   
+        this.state = {
             cells: [],
-            isRunning: false, 
-            refreshInterval: 100
+            isRunning: false,
+            refreshInterval: 100,
+            cellSize: 20
         }
 
         this.gameMatrix = this.createInitialMatrix();
@@ -36,17 +35,24 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         this.handleClearClicked = this.handleClearClicked.bind(this);
         this.handleRandomClicked = this.handleRandomClicked.bind(this);
         this.handleStartClicked = this.handleStartClicked.bind(this);
-        this.handleStopClicked = this.handleStopClicked.bind(this);
+        this.handleRefreshIntervalChanged = this.handleRefreshIntervalChanged.bind(this);
+        this.handleCellSizeChanged = this.handleCellSizeChanged.bind(this);
     }
 
 
     render() {
-        const {cells} = this.state;
+        const { cells, isRunning, cellSize } = this.state;
 
         return (
             <div>
-                <Board rows={this.rows} columns={this.columns} cellSize={this.cellSize} cellBorderThickness={this.cellBorderThickness} cells={cells} onBoardClicked={this.handleBoardClicked}/>
-                <ControlPanel onClearClicked={this.handleClearClicked} onRandomClicked={this.handleRandomClicked} onStartClicked={this.handleStartClicked} onStopClicked={this.handleStopClicked}/>
+                <Board rows={this.rows} columns={this.columns} cellSize={cellSize} cells={cells} onBoardClicked={this.handleBoardClicked} />
+                <ControlPanel
+                    onClearClicked={this.handleClearClicked}
+                    onRandomClicked={this.handleRandomClicked}
+                    onStartClicked={this.handleStartClicked}
+                    onRefreshIntervalChanged={this.handleRefreshIntervalChanged}
+                    onCellSizeChanged={this.handleCellSizeChanged}
+                    isRunning={isRunning} />
             </div>
         );
     }
@@ -62,7 +68,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
                     matrix[x][y] = (Math.random() > this.randomFactor)
                 } else {
                     matrix[x][y] = false;
-                } 
+                }
             }
         }
 
@@ -73,46 +79,60 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         if (x >= 0 && x <= this.rows && y >= 0 && y <= this.columns) {
             this.gameMatrix[x][y] = !this.gameMatrix[x][y];
             this.setState(() => ({
-                cells:  this.updateCells(this.gameMatrix)        
+                cells: this.updateCells(this.gameMatrix)
             }));
         }
     }
 
-    handleClearClicked() : void {
+    handleClearClicked(): void {
         this.gameMatrix = this.createInitialMatrix();
         this.setState(() => ({
-            cells:  []      
+            cells: []
         }));
     }
 
-    handleRandomClicked() : void {
+    handleRandomClicked(): void {
         this.gameMatrix = this.createInitialMatrix(true);
         this.setState(() => ({
-            cells: this.updateCells(this.gameMatrix)      
+            cells: this.updateCells(this.gameMatrix)
         }));
     }
 
-    handleStartClicked() : void {
+    handleRefreshIntervalChanged(interval: number): void {
         this.setState(() => ({
-            isRunning: true     
+            refreshInterval: interval
         }));
-
-        this.runIteration(); 
-
     }
 
 
-    // TODO check whether we need the timeoutHandler 
-    handleStopClicked() : void {
+    handleCellSizeChanged(size: number): void {
         this.setState(() => ({
-            isRunning: false     
+            cellSize: size
+        }));
+    }
+
+    handleStartClicked(): void {
+
+        const newState = !this.state.isRunning;
+
+        this.setState(() => ({
+            isRunning: newState
         }));
 
-        if (this.timeoutHandler) {
-            window.clearTimeout(this.timeoutHandler);
-            this.timeoutHandler = 0;
+        // TODO check whether we need the timeoutHandler 
+        if (newState) {
+            this.runIteration();
+        } else {
+
+            if (this.timeoutHandler) {
+                window.clearTimeout(this.timeoutHandler);
+                this.timeoutHandler = 0;
+            }
         }
+
+
     }
+
 
     updateCells(gameMatrix: boolean[][]): ICell[] {
         let cells = [];
@@ -152,7 +172,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
         this.gameMatrix = newBoard;
         this.setState(() => ({
-            cells: this.updateCells(this.gameMatrix)      
+            cells: this.updateCells(this.gameMatrix)
         }));
 
 
@@ -164,13 +184,13 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
 
     // TODO update algorithm as it is not working properly 
-        /**
-     * Calculate the number of neighbors at point (x, y)
-     * @param {Array} board 
-     * @param {int} x 
-     * @param {int} y 
-     */
-    calculateNeighbors(board:boolean[][], x:number, y:number): number {
+    /**
+ * Calculate the number of neighbors at point (x, y)
+ * @param {Array} board 
+ * @param {int} x 
+ * @param {int} y 
+ */
+    calculateNeighbors(board: boolean[][], x: number, y: number): number {
         let neighbors = 0;
         const dirs = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]];
         for (let i = 0; i < dirs.length; i++) {
@@ -185,5 +205,27 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
         return neighbors;
     }
+
+
+    // TODO include JEST and write tests
+    // include Fluent UI to have a better looking UI\
+    // clean up TSLint 
+
+
+    //     The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, alive or dead, (or populated and unpopulated, respectively). Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
+
+    //     Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+    //     Any live cell with two or three live neighbours lives on to the next generation.
+    //     Any live cell with more than three live neighbours dies, as if by overpopulation.
+    //     Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+    // These rules, which compare the behavior of the automaton to real life, can be condensed into the following:
+
+    //     Any live cell with two or three neighbors survives.
+    //     Any dead cell with three live neighbors becomes a live cell.
+    //     All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+    // The initial pattern constitutes the seed of the system. The first generation is created by applying the above rules simultaneously to every cell in the seed; births and deaths occur simultaneously, and the discrete moment at which this happens is sometimes called a tick. Each generation is a pure function of the preceding one. The rules continue to be applied repeatedly to create further generations. 
+
 
 }

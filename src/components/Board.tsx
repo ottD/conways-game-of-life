@@ -11,12 +11,11 @@ export interface IBoardProps {
     rows: number;
     columns: number;
     cellSize: number;
-    cellBorderThickness: number;
     cells: ICell[];
     onBoardClicked(x: number, y: number): void
 }
 
-export interface IBoardState {
+interface IBoardState {
     width: number,
     height: number
 }
@@ -24,6 +23,7 @@ export interface IBoardState {
 export default class Board extends React.Component<IBoardProps, IBoardState>  {
 
     private boardReference: HTMLDivElement | null = null;
+    private cellBorderThickness = 1;
 
     constructor(props: IBoardProps) {
         super(props);
@@ -37,22 +37,21 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
   
     render() {
         const { width, height } = this.state;
-        const { cellSize, cellBorderThickness, cells } = this.props;
+        const { cellSize, cells } = this.props;
 
-        // TODO fix linear gradient for border thickness > 1
         return (
             <div>
-                <div className="Board" style={{
+                <div className="board" style={{
                     width: width,
                     height: height,
                     backgroundSize: `${cellSize}px ${cellSize}px`,
                     backgroundImage:
-                        `linear-gradient(#333 ${cellBorderThickness}px, transparent ${cellBorderThickness}px),
-                         linear-gradient(90deg, #333 ${cellBorderThickness}px, transparent ${cellBorderThickness}px)`}}
+                        `linear-gradient(#333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px),
+                         linear-gradient(90deg, #333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px)`}}
                     onClick={this.handleClick}
                     ref={(n) => { this.boardReference = n; }}>
 
-                    {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} size={cellSize} border={cellBorderThickness}/> ))}
+                    {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} size={cellSize} border={this.cellBorderThickness}/> ))}
                 </div>
             </div>
         );
@@ -69,6 +68,8 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
         const x = Math.floor(offsetX / cellSize);
         const y = Math.floor(offsetY / cellSize);
 
+
+        // TODO why is is the other way round here : 
         this.props.onBoardClicked(y, x);
     }
 
