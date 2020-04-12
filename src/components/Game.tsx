@@ -1,22 +1,22 @@
 import React from 'react';
 import Board, { ICell } from './Board';
 import ControlPanel from './ControlPanel';
+import { InfoPanel } from './InfoPanel/InfoPanel';
 
 interface IGameState {
     cells: ICell[],
     isRunning: boolean,
+    isInfoPanelVisible: boolean,
     refreshInterval: number,
     cellSize: number
 }
 
 export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
-    // TODO make grid customizable
     // keep game state in 2D array 
     private gameMatrix: boolean[][] = [];
 
     private randomFactor = 0.5;
-
     private rows = 30;
     private columns = 40;
     private timeoutHandler: number = 0;
@@ -26,6 +26,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         this.state = {
             cells: [],
             isRunning: false,
+            isInfoPanelVisible: false,
             refreshInterval: 100,
             cellSize: 20
         }
@@ -35,27 +36,27 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         this.handleClearClicked = this.handleClearClicked.bind(this);
         this.handleRandomClicked = this.handleRandomClicked.bind(this);
         this.handleStartClicked = this.handleStartClicked.bind(this);
+        this.handleAboutClicked = this.handleAboutClicked.bind(this);
         this.handleRefreshIntervalChanged = this.handleRefreshIntervalChanged.bind(this);
-        this.handleCellSizeChanged = this.handleCellSizeChanged.bind(this);
+        this.handleInfoPanelDismissed = this.handleInfoPanelDismissed.bind(this); 
     }
 
 
     render() {
-        const { cells, isRunning, cellSize } = this.state;
+        const { cells, isRunning, isInfoPanelVisible, cellSize } = this.state;
 
         return (
             <div>
-                <h2>Conway's Game of Life</h2>
-
                 <Board rows={this.rows} columns={this.columns} cellSize={cellSize} cells={cells} onBoardClicked={this.handleBoardClicked} />
                 <ControlPanel
                     maxWidth={Math.ceil(this.columns * cellSize)}
                     onClearClicked={this.handleClearClicked}
                     onRandomClicked={this.handleRandomClicked}
                     onStartClicked={this.handleStartClicked}
+                    onAboutClicked={this.handleAboutClicked}
                     onRefreshIntervalChanged={this.handleRefreshIntervalChanged}
-                    onCellSizeChanged={this.handleCellSizeChanged}
                     isRunning={isRunning} />
+                {isInfoPanelVisible && <InfoPanel onDismiss={this.handleInfoPanelDismissed}/>}              
             </div>
         );
     }
@@ -107,10 +108,15 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         }));
     }
 
-
-    handleCellSizeChanged(size: number): void {
+    handleAboutClicked() {
         this.setState(() => ({
-            cellSize: size
+            isInfoPanelVisible: true
+        }));
+    }
+
+    handleInfoPanelDismissed() {
+        this.setState(() => ({
+            isInfoPanelVisible: false
         }));
     }
 

@@ -1,29 +1,33 @@
 import React from 'react';
 import '../styles/ControlPanel.css';
-import { DefaultButton, IIconProps, Slider, IStackTokens, Stack } from 'office-ui-fabric-react';
+import { DefaultButton, IIconProps, Slider, IStackTokens, Stack, ComboBox, IComboBoxOption } from 'office-ui-fabric-react';
 
 export interface IControlPanelProps {
     onRandomClicked(): void,
     onClearClicked(): void,
     onStartClicked(): void,
+    onAboutClicked(): void,
     onRefreshIntervalChanged(interval: number): void;
-    onCellSizeChanged(interval: number): void;
     isRunning: boolean;
     maxWidth: number;
 }
 
+const INITIAL_OPTIONS: IComboBoxOption[] = [
+    { key: '0', text: 'Glider' },
+    { key: '1', text: 'Quadropole' }
+];
 
 export default class ControlPanel extends React.Component<IControlPanelProps>  {
 
     constructor(props: IControlPanelProps) {
         super(props);
-        this.refreshIntervalChanged = this.refreshIntervalChanged.bind(this);
+        //this.refreshIntervalChanged = this.refreshIntervalChanged.bind(this);
     }
 
 
 
     render() {
-        const { onRandomClicked, onClearClicked, onStartClicked, isRunning } = this.props;
+        const { onRandomClicked, onClearClicked, onStartClicked, onAboutClicked, onRefreshIntervalChanged, isRunning } = this.props;
 
         const stackTokens: IStackTokens = { childrenGap: 20 };
 
@@ -31,31 +35,47 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
         const stopIcon: IIconProps = { iconName: 'Stop' };
         const clearIcon: IIconProps = { iconName: 'Delete' };
         const randomIcon: IIconProps = { iconName: 'NumberSequence' };
+        const infoIcon: IIconProps = { iconName: 'Info' };
 
         return (
             <div className="controls">
-                <Stack tokens={stackTokens} styles={{ root: { width: this.props.maxWidth } }}>
+                <Stack tokens={stackTokens} styles={{ root: { width: this.props.maxWidth } }} horizontalAlign={'stretch'}>
 
-                    <div className="buttons">
+                    <Stack horizontal className="buttons" tokens={stackTokens} horizontalAlign={'space-around'}>
+
+                        <ComboBox
+                            autoComplete="on"
+                            placeholder="Select a preset"
+                            options={INITIAL_OPTIONS}
+                            onFocus={() => console.log('onFocus called for basic uncontrolled example')}
+                            onBlur={() => console.log('onBlur called for basic uncontrolled example')}
+                            onMenuOpen={() => console.log('ComboBox menu opened')}
+                            onPendingValueChanged={(option, pendingIndex, pendingValue) =>
+                                console.log(`Preview value was changed. option: ${option}, Pending index: ${pendingIndex}. Pending value: ${pendingValue}.`)
+                            } />
                         <DefaultButton
-                            // className="button"
                             onClick={onRandomClicked}
                             iconProps={randomIcon}
                             text={'Random'} />
+
                         <DefaultButton
-                            className="button"
-                            onClick={onClearClicked}
-                            iconProps={clearIcon}
-                            text={'Clear'} />
-                        <DefaultButton
-                            className="button"
                             toggle
                             checked={isRunning}
                             text={isRunning ? 'Stop' : 'Start'}
                             iconProps={isRunning ? stopIcon : startIcon}
                             onClick={onStartClicked} />
+                        <DefaultButton
+                            onClick={onClearClicked}
+                            iconProps={clearIcon}
+                            text={'Clear'} />
 
-                    </div>
+                        <DefaultButton
+                            onClick={onAboutClicked}
+                            iconProps={infoIcon}
+                            text={`About`} />
+
+
+                    </Stack>
 
                     <Slider
                         label={'Refresh Interval in ms'}
@@ -64,28 +84,16 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
                         step={5}
                         defaultValue={100}
                         showValue={true}
-                        onChange={(value: number) => this.refreshIntervalChanged(value)} />
-
-                    <Slider
-                        disabled={true}
-                        label={'Cell size'}
-                        min={1}
-                        max={60}
-                        step={1}
-                        defaultValue={20}
-                        showValue={true}
-                        onChange={(value: number) => this.cellSizeChanged(value)} />
+                        onChange={(value: number) => onRefreshIntervalChanged(value)} />
 
                 </Stack>
             </div>
         );
     }
 
-    private refreshIntervalChanged(interval: number): void {
-        this.props.onRefreshIntervalChanged(interval);
-    }
+    // private refreshIntervalChanged(interval: number): void {
+    //     this.props.onRefreshIntervalChanged(interval);
+    // }
 
-    private cellSizeChanged(interval: number): void {
-        this.props.onCellSizeChanged(interval);
-    }
+
 }

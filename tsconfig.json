@@ -20,6 +20,7 @@
 		"jsx": "react",
 		"baseUrl": "./src",
 		"lib": [
+			"es7",
 			"es2015",
 			"dom.iterable",
 			"es2016.array.include",
@@ -39,4 +40,39 @@
 		"forceConsistentCasingInFileNames": true,
 		"importHelpers": true
 	},
+	"exclude": [
+	  "node_modules"
+	]
 }
+
+// {
+// 	"compilerOptions": {
+// 	  "target": "esnext",
+// 	  "module": "commonjs",
+// 	  "jsx": "react",
+// 	  "strict": true,
+// 	  "moduleResolution": "node",
+// 	  "sourceMap": true,
+// 	  "emitDecoratorMetadata": true,
+// 	  "experimentalDecorators": true,
+// 	  "removeComments": false,
+// 	  "outDir": "./dist/",
+// 	  "allowUnusedLabels": false,
+// 	  "noImplicitReturns": true,
+// 	  "noUnusedParameters": true,
+// 	  "noUnusedLocals": true,
+// 	  "lib": [
+// 		"es7",
+// 		"dom"
+// 	  ],
+// 	  "pretty": true,
+// 	  "typeRoots": [
+// 		"node_modules/@types"
+// 	  ]
+// 	},
+// 	"exclude": [
+// 	  "node_modules"
+// 	],
+// 	"compileOnSave": false,
+// 	"buildOnSave": false
+// }

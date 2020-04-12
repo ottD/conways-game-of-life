@@ -3,13 +3,10 @@ import Game from './Game';
 import { initializeIcons } from '@uifabric/icons';
 import '../styles/index.css';
 
+// initialize Fluent UI icons from default CDN
 initializeIcons();
 
-export interface IAppProps { }
-
-export interface IAppState { }
-
-export default class App extends React.PureComponent<IAppProps, IAppState> {
+export default class App extends React.PureComponent {
     render() {
         return (
             <div className="App">

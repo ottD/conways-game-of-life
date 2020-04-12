@@ -47,7 +47,7 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
                     backgroundSize: `${cellSize}px ${cellSize}px`,
                     backgroundImage:
                         `linear-gradient(#333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px),
-                            linear-gradient(90deg, #333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px)`
+                        linear-gradient(90deg, #333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px)`
                 }}
                 onClick={this.handleClick}
                 ref={(n) => { this.boardReference = n; }}>

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoPanel snapshot renders correctly 1`] = `
+<StyledPanelBase
+  closeButtonAriaLabel="Close"
+  headerText="Conway's Game of Life"
+  isOpen={true}
+  onDismiss={[Function]}
+  onRenderFooterContent={[Function]}
+>
+  <p>
+    <StyledLinkBase
+      href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+      target="_blank"
+    >
+      Conway's Game of Life
+    </StyledLinkBase>
+     
+     is a cellular automaton invented devised by the British mathematician John Horton Conway in 1970.
+  </p>
+  <p>
+    <strong>
+      Rules:
+    </strong>
+    <ul>
+      <li>
+        Any live cell with two or three live neighbors survives.
+      </li>
+      <li>
+        Any dead cell with three live neighbors becomes a live cell.
+      </li>
+      <li>
+        All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+      </li>
+    </ul>
+  </p>
+</StyledPanelBase>
+`;
