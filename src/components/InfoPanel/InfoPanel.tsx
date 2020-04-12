@@ -20,7 +20,7 @@ export const InfoPanel = ({ onDismiss }: IInfoPanelProps) => {
       closeButtonAriaLabel="Close"
       onRenderFooterContent={onRenderFooterContent}>
       <p>
-        <Link href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conway's Game of Life</Link>
+        <Link href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conway`&apos;`s Game of Life</Link>
         {' '} is a cellular automaton invented devised by the British mathematician John Horton Conway in 1970.
       </p>
       <p>

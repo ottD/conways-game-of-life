@@ -3,10 +3,10 @@ import '../styles/ControlPanel.css';
 import { DefaultButton, IIconProps, Slider, IStackTokens, Stack, ComboBox, IComboBoxOption } from 'office-ui-fabric-react';
 
 export interface IControlPanelProps {
-    onRandomClicked(): void,
-    onClearClicked(): void,
-    onStartClicked(): void,
-    onAboutClicked(): void,
+    onRandomClicked(): void;
+    onClearClicked(): void;
+    onStartClicked(): void;
+    onAboutClicked(): void;
     onRefreshIntervalChanged(interval: number): void;
     isRunning: boolean;
     maxWidth: number;
@@ -21,10 +21,7 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
 
     constructor(props: IControlPanelProps) {
         super(props);
-        //this.refreshIntervalChanged = this.refreshIntervalChanged.bind(this);
     }
-
-
 
     render() {
         const { onRandomClicked, onClearClicked, onStartClicked, onAboutClicked, onRefreshIntervalChanged, isRunning } = this.props;
@@ -73,8 +70,6 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
                             onClick={onAboutClicked}
                             iconProps={infoIcon}
                             text={`About`} />
-
-
                     </Stack>
 
                     <Slider
@@ -90,10 +85,4 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
             </div>
         );
     }
-
-    // private refreshIntervalChanged(interval: number): void {
-    //     this.props.onRefreshIntervalChanged(interval);
-    // }
-
-
 }

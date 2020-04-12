@@ -1,10 +1,10 @@
 import React from 'react';
-import Cell from './Cell';
 import '../styles/Board.css';
+import Cell from './Cell';
 
 export interface ICell {
-    x: number,
-    y: number
+    x: number;
+    y: number;
 }
 
 export interface IBoardProps {
@@ -12,12 +12,12 @@ export interface IBoardProps {
     columns: number;
     cellSize: number;
     cells: ICell[];
-    onBoardClicked(x: number, y: number): void
+    onBoardClicked(x: number, y: number): void;
 }
 
 interface IBoardState {
-    width: number,
-    height: number
+    width: number;
+    height: number;
 }
 
 export default class Board extends React.Component<IBoardProps, IBoardState>  {
@@ -58,7 +58,7 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
     }
 
 
-    private handleClick = (event: { clientX: number; clientY: number; }) => {
+    private handleClick = (event: { clientX: number; clientY: number}) => {
         const { cellSize } = this.props;
         const elemOffset = this.getElementOffset();
 
@@ -74,7 +74,7 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
     }
 
 
-    private getElementOffset(): { x: number, y: number } {
+    private getElementOffset(): { x: number; y: number } {
         if (this.boardReference != null) {
             const rect = this.boardReference.getBoundingClientRect();
             const doc = document.documentElement;

@@ -2,10 +2,10 @@ import React from 'react';
 import '../styles/Cell.css';
 
 export interface ICellProps {
-    x: number,
-    y: number,
-    size: number,
-    border: number
+    x: number;
+    y: number;
+    size: number;
+    border: number;
 }
 
 export default class Cell extends React.Component<ICellProps, Readonly<{}>> {

@@ -4,11 +4,11 @@ import ControlPanel from './ControlPanel';
 import { InfoPanel } from './InfoPanel/InfoPanel';
 
 interface IGameState {
-    cells: ICell[],
-    isRunning: boolean,
-    isInfoPanelVisible: boolean,
-    refreshInterval: number,
-    cellSize: number
+    cells: ICell[];
+    isRunning: boolean;
+    isInfoPanelVisible: boolean;
+    refreshInterval: number;
+    cellSize: number;
 }
 
 export default class Game extends React.Component<Readonly<{}>, IGameState> {
@@ -19,7 +19,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
     private randomFactor = 0.5;
     private rows = 30;
     private columns = 40;
-    private timeoutHandler: number = 0;
+    private timeoutHandler = 0;
 
     constructor(props: Readonly<{}>) {
         super(props);
@@ -62,7 +62,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
     }
 
     createInitialMatrix(setRandomValues?: boolean): boolean[][] {
-        let matrix: boolean[][] = [];
+        const matrix: boolean[][] = [];
 
         // create 2D array        
         for (let x = 0; x < this.rows; x++) {
@@ -144,7 +144,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
 
     updateCells(gameMatrix: boolean[][]): ICell[] {
-        let cells = [];
+        const cells = [];
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0; x < this.columns; x++) {
                 if (gameMatrix[y][x]) {
@@ -160,11 +160,11 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
     // TODO update algorithm below 
     runIteration() {
-        let newBoard = this.createInitialMatrix();
+        const newBoard = this.createInitialMatrix();
 
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0; x < this.columns; x++) {
-                let neighbors = this.calculateNeighbors(this.gameMatrix, x, y);
+                const neighbors = this.calculateNeighbors(this.gameMatrix, x, y);
                 if (this.gameMatrix[y][x]) {
                     if (neighbors === 2 || neighbors === 3) {
                         newBoard[y][x] = true;
@@ -204,8 +204,8 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         const dirs = [[-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]];
         for (let i = 0; i < dirs.length; i++) {
             const dir = dirs[i];
-            let y1 = y + dir[0];
-            let x1 = x + dir[1];
+            const y1 = y + dir[0];
+            const x1 = x + dir[1];
 
             if (x1 >= 0 && x1 < this.columns && y1 >= 0 && y1 < this.rows && board[y1][x1]) {
                 neighbors++;
