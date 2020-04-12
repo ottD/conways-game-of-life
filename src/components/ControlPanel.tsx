@@ -8,23 +8,31 @@ export interface IControlPanelProps {
     onStartClicked(): void;
     onAboutClicked(): void;
     onRefreshIntervalChanged(interval: number): void;
+    onPresetChangged(value: string): void,
     isRunning: boolean;
     maxWidth: number;
 }
 
-const INITIAL_OPTIONS: IComboBoxOption[] = [
-    { key: '0', text: 'Glider' },
-    { key: '1', text: 'Quadropole' }
+interface IControlPanelState {
+    selectedOptionKey: string | number;
+}
+
+const PRESET_OPTIONS: IComboBoxOption[] = [
+    { key: 'Glider', text: 'Glider' },
+    { key: 'Spaceship', text: 'Spaceship' },
 ];
 
-export default class ControlPanel extends React.Component<IControlPanelProps>  {
+export default class ControlPanel extends React.Component<IControlPanelProps, IControlPanelState>  {
 
     constructor(props: IControlPanelProps) {
         super(props);
+        this.state = {
+            selectedOptionKey: 0
+        }
     }
 
     render() {
-        const { onRandomClicked, onClearClicked, onStartClicked, onAboutClicked, onRefreshIntervalChanged, isRunning } = this.props;
+        const { onRandomClicked, onStartClicked, onAboutClicked, onRefreshIntervalChanged, isRunning } = this.props;
 
         const stackTokens: IStackTokens = { childrenGap: 20 };
 
@@ -33,6 +41,8 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
         const clearIcon: IIconProps = { iconName: 'Delete' };
         const randomIcon: IIconProps = { iconName: 'NumberSequence' };
         const infoIcon: IIconProps = { iconName: 'Info' };
+
+
 
         return (
             <div className="controls">
@@ -43,18 +53,13 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
                         <ComboBox
                             autoComplete="on"
                             placeholder="Select a preset"
-                            options={INITIAL_OPTIONS}
-                            onFocus={() => console.log('onFocus called for basic uncontrolled example')}
-                            onBlur={() => console.log('onBlur called for basic uncontrolled example')}
-                            onMenuOpen={() => console.log('ComboBox menu opened')}
-                            onPendingValueChanged={(option, pendingIndex, pendingValue) =>
-                                console.log(`Preview value was changed. option: ${option}, Pending index: ${pendingIndex}. Pending value: ${pendingValue}.`)
-                            } />
+                            selectedKey={this.state.selectedOptionKey}
+                            options={PRESET_OPTIONS}
+                            onChange={(_, option) => this.onChange(option)} />
                         <DefaultButton
                             onClick={onRandomClicked}
                             iconProps={randomIcon}
                             text={'Random'} />
-
                         <DefaultButton
                             toggle
                             checked={isRunning}
@@ -62,7 +67,7 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
                             iconProps={isRunning ? stopIcon : startIcon}
                             onClick={onStartClicked} />
                         <DefaultButton
-                            onClick={onClearClicked}
+                            onClick={() => this.onClear()}
                             iconProps={clearIcon}
                             text={'Clear'} />
 
@@ -84,5 +89,21 @@ export default class ControlPanel extends React.Component<IControlPanelProps>  {
                 </Stack>
             </div>
         );
+    }
+
+    private onChange(option: IComboBoxOption | undefined) {
+        if (option) {
+            this.setState({
+                selectedOptionKey: option.key,
+            });
+            this.props.onPresetChangged(option.key as string)
+        }
+    };
+
+    private onClear() {
+        this.setState({
+            selectedOptionKey: 0
+        });
+        this.props.onClearClicked()
     }
 }

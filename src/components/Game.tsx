@@ -39,6 +39,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         this.handleAboutClicked = this.handleAboutClicked.bind(this);
         this.handleRefreshIntervalChanged = this.handleRefreshIntervalChanged.bind(this);
         this.handleInfoPanelDismissed = this.handleInfoPanelDismissed.bind(this); 
+        this.handlePresetChanged = this.handlePresetChanged.bind(this);
     }
 
 
@@ -54,6 +55,7 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
                     onRandomClicked={this.handleRandomClicked}
                     onStartClicked={this.handleStartClicked}
                     onAboutClicked={this.handleAboutClicked}
+                    onPresetChangged = {this.handlePresetChanged}
                     onRefreshIntervalChanged={this.handleRefreshIntervalChanged}
                     isRunning={isRunning} />
                 {isInfoPanelVisible && <InfoPanel onDismiss={this.handleInfoPanelDismissed}/>}              
@@ -108,9 +110,16 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         }));
     }
 
-    handleAboutClicked() {
+    handleAboutClicked(): void {
         this.setState(() => ({
             isInfoPanelVisible: true
+        }));
+    }
+
+    handlePresetChanged(value: string): void {
+        this.gameMatrix = this.createPreset(value); 
+        this.setState(() => ({
+            cells: this.updateCells(this.gameMatrix)
         }));
     }
 
@@ -118,6 +127,34 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
         this.setState(() => ({
             isInfoPanelVisible: false
         }));
+    }
+
+    createPreset(value: string): boolean[][] {
+        const matrix = this.createInitialMatrix();
+
+        if (value == "Glider") {
+            matrix[0][0]= true;
+            matrix[0][2]= true;
+            matrix[1][1]= true;
+            matrix[1][2]= true;
+            matrix[2][1]= true;
+        } else if (value=="Spaceship" ) {
+            matrix[0][1]= true;
+            matrix[0][2]= true;
+            matrix[1][0]= true;
+            matrix[1][1]= true;
+            matrix[1][2]= true;
+            matrix[1][3]= true;
+            matrix[2][0]= true;
+            matrix[2][1]= true;
+            matrix[2][3]= true;
+            matrix[2][4]= true;
+            matrix[3][2]= true;
+            matrix[3][3]= true;
+        }
+
+    
+        return matrix;
     }
 
     handleStartClicked(): void {
@@ -214,27 +251,4 @@ export default class Game extends React.Component<Readonly<{}>, IGameState> {
 
         return neighbors;
     }
-
-
-    // TODO include JEST and write tests
-    // include Fluent UI to have a better looking UI\
-    // clean up TSLint 
-
-
-    //     The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, alive or dead, (or populated and unpopulated, respectively). Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
-
-    //     Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-    //     Any live cell with two or three live neighbours lives on to the next generation.
-    //     Any live cell with more than three live neighbours dies, as if by overpopulation.
-    //     Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-
-    // These rules, which compare the behavior of the automaton to real life, can be condensed into the following:
-
-    //     Any live cell with two or three neighbors survives.
-    //     Any dead cell with three live neighbors becomes a live cell.
-    //     All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-
-    // The initial pattern constitutes the seed of the system. The first generation is created by applying the above rules simultaneously to every cell in the seed; births and deaths occur simultaneously, and the discrete moment at which this happens is sometimes called a tick. Each generation is a pure function of the preceding one. The rules continue to be applied repeatedly to create further generations. 
-
-
 }
