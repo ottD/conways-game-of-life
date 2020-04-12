@@ -1,5 +1,5 @@
 import React from 'react';
-import Game from './Game';
+import Game from './Game/Game';
 import { initializeIcons } from '@uifabric/icons';
 import '../styles/index.css';
 

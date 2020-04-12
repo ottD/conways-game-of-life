@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Board.css';
+import '../../styles/Board.css';
 import Cell from './Cell';
 
 export interface ICell {
@@ -12,7 +12,7 @@ export interface IBoardProps {
     columns: number;
     cellSize: number;
     cells: ICell[];
-    onBoardClicked(x: number, y: number): void;
+    onClick(x: number, y: number): void;
 }
 
 interface IBoardState {
@@ -20,10 +20,10 @@ interface IBoardState {
     height: number;
 }
 
-export default class Board extends React.Component<IBoardProps, IBoardState>  {
+const CELL_BORDER = 1;
 
+export default class Board extends React.Component<IBoardProps, IBoardState>  {
     private boardReference: HTMLDivElement | null = null;
-    private cellBorderThickness = 1;
 
     constructor(props: IBoardProps) {
         super(props);
@@ -46,19 +46,18 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
                     height: height,
                     backgroundSize: `${cellSize}px ${cellSize}px`,
                     backgroundImage:
-                        `linear-gradient(#333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px),
-                        linear-gradient(90deg, #333 ${this.cellBorderThickness}px, transparent ${this.cellBorderThickness}px)`
+                        `linear-gradient(#333 ${CELL_BORDER}px, transparent ${CELL_BORDER}px),
+                        linear-gradient(90deg, #333 ${CELL_BORDER}px, transparent ${CELL_BORDER}px)`
                 }}
-                onClick={this.handleClick}
+                onClick={this.onClick}
                 ref={(n) => { this.boardReference = n; }}>
 
-                {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} size={cellSize} border={this.cellBorderThickness} />))}
+                {cells.map(cell => (<Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} size={cellSize} border={CELL_BORDER} />))}
             </div>
         );
     }
 
-
-    private handleClick = (event: { clientX: number; clientY: number}) => {
+    private onClick = (event: { clientX: number; clientY: number }) => {
         const { cellSize } = this.props;
         const elemOffset = this.getElementOffset();
 
@@ -67,12 +66,8 @@ export default class Board extends React.Component<IBoardProps, IBoardState>  {
 
         const x = Math.floor(offsetX / cellSize);
         const y = Math.floor(offsetY / cellSize);
-
-
-        // TODO why is is the other way round here : 
-        this.props.onBoardClicked(y, x);
+        this.props.onClick(y, x);
     }
-
 
     private getElementOffset(): { x: number; y: number } {
         if (this.boardReference != null) {

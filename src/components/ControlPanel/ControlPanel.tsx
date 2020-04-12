@@ -1,16 +1,16 @@
 import React from 'react';
-import '../styles/ControlPanel.css';
+import '../../styles/ControlPanel.css';
 import { DefaultButton, IIconProps, Slider, IStackTokens, Stack, ComboBox, IComboBoxOption } from 'office-ui-fabric-react';
 
 export interface IControlPanelProps {
-    onRandomClicked(): void;
-    onClearClicked(): void;
-    onStartClicked(): void;
-    onAboutClicked(): void;
+    onRandom(): void;
+    onClear(): void;
+    onStart(): void;
+    onAbout(): void;
     onRefreshIntervalChanged(interval: number): void;
-    onPresetChangged(value: string): void,
+    onPresetSelected(value: string): void,
     isRunning: boolean;
-    maxWidth: number;
+    width: number;
 }
 
 interface IControlPanelState {
@@ -32,24 +32,18 @@ export default class ControlPanel extends React.Component<IControlPanelProps, IC
     }
 
     render() {
-        const { onRandomClicked, onStartClicked, onAboutClicked, onRefreshIntervalChanged, isRunning } = this.props;
-
+        const { onRandom: onRandomClicked, onStart: onStartClicked, onAbout: onAboutClicked, onRefreshIntervalChanged, isRunning } = this.props;
         const stackTokens: IStackTokens = { childrenGap: 20 };
-
         const startIcon: IIconProps = { iconName: 'Play' };
         const stopIcon: IIconProps = { iconName: 'Stop' };
         const clearIcon: IIconProps = { iconName: 'Delete' };
         const randomIcon: IIconProps = { iconName: 'NumberSequence' };
         const infoIcon: IIconProps = { iconName: 'Info' };
 
-
-
         return (
             <div className="controls">
-                <Stack tokens={stackTokens} styles={{ root: { width: this.props.maxWidth } }} horizontalAlign={'stretch'}>
-
-                    <Stack horizontal className="buttons" tokens={stackTokens} horizontalAlign={'space-around'}>
-
+                <Stack tokens={stackTokens} styles={{ root: { width: this.props.width } }} horizontalAlign={'stretch'}>
+                    <Stack horizontal tokens={stackTokens} horizontalAlign={'space-around'}>
                         <ComboBox
                             autoComplete="on"
                             placeholder="Select a preset"
@@ -70,22 +64,19 @@ export default class ControlPanel extends React.Component<IControlPanelProps, IC
                             onClick={() => this.onClear()}
                             iconProps={clearIcon}
                             text={'Clear'} />
-
                         <DefaultButton
                             onClick={onAboutClicked}
                             iconProps={infoIcon}
                             text={`About`} />
                     </Stack>
-
                     <Slider
-                        label={'Refresh Interval in ms'}
+                        label={'Refresh interval in ms'}
                         min={0}
                         max={1000}
                         step={5}
                         defaultValue={100}
                         showValue={true}
                         onChange={(value: number) => onRefreshIntervalChanged(value)} />
-
                 </Stack>
             </div>
         );
@@ -96,7 +87,7 @@ export default class ControlPanel extends React.Component<IControlPanelProps, IC
             this.setState({
                 selectedOptionKey: option.key,
             });
-            this.props.onPresetChangged(option.key as string)
+            this.props.onPresetSelected(option.key as string)
         }
     };
 
@@ -104,6 +95,6 @@ export default class ControlPanel extends React.Component<IControlPanelProps, IC
         this.setState({
             selectedOptionKey: 0
         });
-        this.props.onClearClicked()
+        this.props.onClear()
     }
 }
