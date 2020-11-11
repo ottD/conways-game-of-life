@@ -56,7 +56,7 @@ Add additional notes about how to deploy this on a live system -->
 
 ## Built With
 
-* [React](https://reactjs.org/) - A JavaScrupt library for building user interfaces.
+* [React](https://reactjs.org/) - A JavaScript library for building user interfaces.
 * [TypeScript](https://www.typescriptlang.org/) - TypeScript extends JavaScript by adding types to the language.
 * [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/) - An ecosystem for building highly customizable enterprise class user interfaces.
 * [webpack](https://webpack.js.org/) - webpack is a module bundler.
