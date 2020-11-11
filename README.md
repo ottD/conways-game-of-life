@@ -1,9 +1,8 @@
 # conways-game-of-life
-Simple implementation of Conway's Game of Life using React with TypeScript
+Simple implementation of Conway's Game of Lifeusing React with TypeScript.
+Try it [here](https://mango-stone-09d03b110.azurestaticapps.net/).
 
 ![Screenshot](assets/screenshot.png)
-
-Try it here: [Game of Life](https://mango-stone-09d03b110.azurestaticapps.net/)
 
 
 ## Getting Started
