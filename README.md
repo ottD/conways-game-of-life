@@ -3,6 +3,8 @@ Simple implementation of Conway's Game of Life using React with TypeScript
 
 ![Screenshot](assets/screenshot.png)
 
+Try it here: [Game of Life](https://mango-stone-09d03b110.azurestaticapps.net/)
+
 
 ## Getting Started
 
